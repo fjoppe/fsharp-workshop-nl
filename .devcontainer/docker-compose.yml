@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+      # this is the Dev Container, which just points to the Dockerfile we already have, for creation
+  fsharp-devcontainer:
+    build:  
+      context: .              # current folder 
+      dockerfile: Dockerfile  # create from Dockerfile
+    hostname: fsharp-devcontainer
+
+    #   This command prevents the dev container from shutting down, which is default behavior
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+    volumes:
+      # Mounts the project folder to '/workspace'. The target path inside the container
+      # should match what your application expects. In this case, the compose file is
+      # in a sub-folder, so we will mount '..'. You would then reference this path as the
+      # 'workspaceFolder' in '.devcontainer/devcontainer.json' so VS Code starts here.
+      - ..:/workspace:cached
+    user: vscode
+
+  sqlserver-container:
+    build:
+      context:  .
+      dockerfile: DockerfileSqlServer
+    hostname: sqlserver
+    ports:  
+      - 8433:1433
+
+
+
+      
